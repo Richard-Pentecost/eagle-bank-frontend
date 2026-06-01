@@ -1,4 +1,6 @@
 import type { User } from '@/types'
+import { createDefaultAccounts } from './accounts'
+import { createDefaultTransactions } from './transactions'
 
 export const users: (User & { password: string })[] = [
   {
@@ -37,6 +39,10 @@ export function createUser(name: string, email: string, password: string) {
     createdAt: new Date().toISOString(),
   }
   users.push(user)
+
+  const newAccounts = createDefaultAccounts(user.id)
+  createDefaultTransactions(newAccounts.map((a) => a.id))
+
   return user
 }
 

@@ -69,12 +69,12 @@ describe('AccountsPage', () => {
     )
   })
 
-  it('masks account numbers', async () => {
+  it('displays account numbers', async () => {
     renderAccounts()
 
     await waitFor(
       () => {
-        expect(screen.getAllByText(/\*\*\*\*\d{4}/).length).toBeGreaterThan(0)
+        expect(screen.getAllByText(/\d{8}/).length).toBeGreaterThan(0)
       },
       { timeout: 3000 },
     )

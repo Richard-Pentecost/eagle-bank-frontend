@@ -51,6 +51,40 @@ export const accounts: Account[] = [
   },
 ]
 
+let nextAccountIndex = accounts.length + 1
+
+export function createDefaultAccounts(userId: string): Account[] {
+  const now = new Date().toISOString()
+  const newAccounts: Account[] = [
+    {
+      id: `acc-${nextAccountIndex++}`,
+      userId,
+      name: 'Current Account',
+      accountNumber: String(10000000 + Math.floor(Math.random() * 90000000)),
+      sortCode: '01-02-03',
+      type: 'savings',
+      balance: 1500.0,
+      currency: 'GBP',
+      status: 'active',
+      createdAt: now,
+    },
+    {
+      id: `acc-${nextAccountIndex++}`,
+      userId,
+      name: 'Savings Account',
+      accountNumber: String(10000000 + Math.floor(Math.random() * 90000000)),
+      sortCode: '01-02-03',
+      type: 'savings',
+      balance: 3200.0,
+      currency: 'GBP',
+      status: 'active',
+      createdAt: now,
+    },
+  ]
+  accounts.push(...newAccounts)
+  return newAccounts
+}
+
 export function getAccountsByUserId(userId: string) {
   return accounts.filter((a) => a.userId === userId)
 }
