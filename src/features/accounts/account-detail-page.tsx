@@ -8,7 +8,8 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { Spinner } from '@/components/ui/spinner'
 import { ErrorMessage } from '@/components/feedback/error-message'
 import { EmptyState } from '@/components/feedback/empty-state'
-import { formatCurrency, formatDate } from '@/lib/formatters'
+import { TransactionRow } from '@/components/ui/transaction-row'
+import { formatCurrency } from '@/lib/formatters'
 
 export function Component() {
   const { id } = useParams<{ id: string }>()
@@ -104,20 +105,8 @@ export function Component() {
           ) : (
             <ul className="space-y-3" role="list">
               {transactions.map((txn) => (
-                <li key={txn.id} className="flex items-center justify-between border-b border-brand-border pb-3 last:border-0 last:pb-0">
-                  <div>
-                    <p className="text-sm font-medium text-brand-primary">{txn.description}</p>
-                    <p className="text-xs text-brand-muted">
-                      {formatDate(txn.date)} &middot; {txn.counterparty}
-                    </p>
-                  </div>
-                  <span
-                    className={`text-sm font-semibold ${
-                      txn.type === 'deposit' ? 'text-brand-success' : 'text-brand-danger'
-                    }`}
-                  >
-                    {txn.type === 'deposit' ? '+' : '-'}{formatCurrency(txn.amount)}
-                  </span>
+                <li key={txn.id} className="border-b border-brand-border pb-3 last:border-0 last:pb-0">
+                  <TransactionRow transaction={txn} showCounterparty />
                 </li>
               ))}
             </ul>

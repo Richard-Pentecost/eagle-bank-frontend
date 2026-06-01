@@ -4,9 +4,9 @@ import { Link, useNavigate, useLocation } from 'react-router'
 import { useAuth } from '@/providers/auth-provider'
 import { loginSchema, type LoginFormData } from '@/lib/validators'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { FormField } from '@/components/ui/form-field'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import { Alert } from '@/components/feedback/alert'
 import { usePageTitle } from '@/hooks/use-page-title'
 
 export function LoginPage() {
@@ -49,51 +49,25 @@ export function LoginPage() {
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <CardContent className="space-y-4">
-              {error && (
-                <div
-                  className="rounded-md bg-red-50 p-3 text-sm text-brand-danger"
-                  role="alert"
-                  aria-live="polite"
-                >
-                  {error}
-                </div>
-              )}
+              {error && <Alert variant="error">{error}</Alert>}
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  error={!!errors.email}
-                  aria-describedby={errors.email ? 'email-error' : undefined}
-                  {...register('email')}
-                />
-                {errors.email && (
-                  <p id="email-error" className="text-sm text-brand-danger" role="alert">
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                label="Email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                error={errors.email?.message}
+                {...register('email')}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  autoComplete="current-password"
-                  error={!!errors.password}
-                  aria-describedby={errors.password ? 'password-error' : undefined}
-                  {...register('password')}
-                />
-                {errors.password && (
-                  <p id="password-error" className="text-sm text-brand-danger" role="alert">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                label="Password"
+                type="password"
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                error={errors.password?.message}
+                {...register('password')}
+              />
             </CardContent>
 
             <CardFooter className="flex-col gap-4">
@@ -110,9 +84,9 @@ export function LoginPage() {
           </form>
         </Card>
 
-        <div className="mt-4 rounded-md bg-blue-50 p-3 text-center text-sm text-blue-700">
+        <Alert variant="info" className="mt-4 text-center">
           Demo: <strong>demo@eaglebank.com</strong> / <strong>password123</strong>
-        </div>
+        </Alert>
       </div>
     </div>
   )

@@ -8,23 +8,22 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorMessage } from '@/components/feedback/error-message'
 import { EmptyState } from '@/components/feedback/empty-state'
 import { Button } from '@/components/ui/button'
+import { TransactionRow } from '@/components/ui/transaction-row'
 import { Link } from 'react-router'
 import { motion } from 'framer-motion'
-import { formatCurrency, formatDate, getGreeting } from '@/lib/formatters'
+import { formatCurrency, getGreeting } from '@/lib/formatters'
 import { fadeIn, staggerContainer } from '@/lib/animations'
-import type { Transaction } from '@/types'
 
 export function Component() {
   usePageTitle('Dashboard')
   const prefersReducedMotion = useReducedMotion()
   const { user } = useAuth()
   const { dashboard, isLoading, error, retry } = useDashboard()
+  const firstName = useMemo(() => user?.name?.split(' ')[0] || 'User', [user?.name])
 
   if (error) {
     return <ErrorMessage message={error} onRetry={retry} />
   }
-
-  const firstName = useMemo(() => user?.name?.split(' ')[0] || 'User', [user?.name])
 
   return (
     <motion.div
@@ -104,7 +103,9 @@ export function Component() {
             ) : dashboard?.recentTransactions.length ? (
               <ul className="space-y-3" role="list">
                 {dashboard.recentTransactions.map((txn) => (
-                  <TransactionItem key={txn.id} transaction={txn} />
+                  <li key={txn.id}>
+                    <TransactionRow transaction={txn} />
+                  </li>
                 ))}
               </ul>
             ) : (
@@ -186,22 +187,5 @@ const SummaryCard = memo(function SummaryCard({
         </div>
       </CardContent>
     </Card>
-  )
-})
-
-const TransactionItem = memo(function TransactionItem({ transaction }: { transaction: Transaction }) {
-  const isPositive = transaction.type === 'deposit'
-  return (
-    <li className="flex items-center justify-between">
-      <div>
-        <p className="text-sm font-medium text-brand-primary">{transaction.description}</p>
-        <p className="text-xs text-brand-muted">{formatDate(transaction.date)}</p>
-      </div>
-      <span
-        className={`text-sm font-semibold ${isPositive ? 'text-brand-success' : 'text-brand-danger'}`}
-      >
-        {isPositive ? '+' : '-'}{formatCurrency(transaction.amount)}
-      </span>
-    </li>
   )
 })
