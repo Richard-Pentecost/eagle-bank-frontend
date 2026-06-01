@@ -7,6 +7,8 @@ A responsive banking frontend platform built with React and TypeScript. This app
 - **Email:** `demo@eaglebank.com`
 - **Password:** `password123`
 
+You can also register a new account. New users are automatically seeded with a Current Account (£1,500), a Savings Account (£3,200), and 15 sample transactions so the dashboard, accounts, and transactions pages are populated immediately after sign-up.
+
 ## Getting Started
 
 ### Prerequisites

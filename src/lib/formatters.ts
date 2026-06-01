@@ -20,9 +20,6 @@ export function formatRelativeDate(dateString: string): string {
   return formatDistanceToNow(new Date(dateString), { addSuffix: true })
 }
 
-export function formatAccountNumber(accountNumber: string): string {
-  return `****${accountNumber.slice(-4)}`
-}
 
 export function getGreeting(): string {
   const hour = new Date().getHours()

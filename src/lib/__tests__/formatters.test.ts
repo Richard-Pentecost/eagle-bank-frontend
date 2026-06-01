@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { formatCurrency, formatAccountNumber, getGreeting, formatDate } from '../formatters'
+import { formatCurrency, getGreeting, formatDate } from '../formatters'
 
 describe('formatCurrency', () => {
   it('formats positive amounts in GBP', () => {
@@ -15,15 +15,6 @@ describe('formatCurrency', () => {
   })
 })
 
-describe('formatAccountNumber', () => {
-  it('masks all but last 4 digits', () => {
-    expect(formatAccountNumber('12345678')).toBe('****5678')
-  })
-
-  it('handles short numbers', () => {
-    expect(formatAccountNumber('1234')).toBe('****1234')
-  })
-})
 
 describe('getGreeting', () => {
   it('returns Good morning before noon', () => {

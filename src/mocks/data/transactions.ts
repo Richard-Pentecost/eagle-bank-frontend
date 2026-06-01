@@ -75,6 +75,41 @@ function generateTransactions(): Transaction[] {
 
 export const transactions = generateTransactions()
 
+let nextTxnIndex = transactions.length + 1
+
+export function createDefaultTransactions(accountIds: string[]): Transaction[] {
+  const now = new Date()
+  const types: Transaction['type'][] = ['deposit', 'withdrawal', 'transfer']
+  const newTxns: Transaction[] = []
+
+  for (let i = 0; i < 15; i++) {
+    const type = types[i % 3]
+    const daysAgo = Math.floor(Math.random() * 30)
+    const date = subDays(now, daysAgo)
+    const amount =
+      type === 'deposit'
+        ? Math.round((Math.random() * 2000 + 200) * 100) / 100
+        : Math.round((Math.random() * 300 + 10) * 100) / 100
+
+    newTxns.push({
+      id: `txn-${nextTxnIndex++}`,
+      accountId: randomItem(accountIds),
+      type,
+      amount,
+      currency: 'GBP',
+      description: randomItem(descriptions[type]),
+      category: randomItem(categories),
+      date: format(date, "yyyy-MM-dd'T'HH:mm:ss'Z'"),
+      status: Math.random() > 0.05 ? 'completed' : 'pending',
+      counterparty: randomItem(counterparties[type]),
+    })
+  }
+
+  newTxns.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  transactions.push(...newTxns)
+  return newTxns
+}
+
 export function getTransactionById(id: string) {
   return transactions.find((t) => t.id === id)
 }

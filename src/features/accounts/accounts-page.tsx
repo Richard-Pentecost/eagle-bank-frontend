@@ -8,7 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorMessage } from '@/components/feedback/error-message'
 import { EmptyState } from '@/components/feedback/empty-state'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
-import { formatCurrency, formatAccountNumber } from '@/lib/formatters'
+import { formatCurrency } from '@/lib/formatters'
 import type { Account } from '@/types'
 
 export function Component() {
@@ -58,7 +58,7 @@ export function Component() {
                       </TableCell>
                       <TableCell>
                         <span aria-label={`Account number ${account.accountNumber}`}>
-                          {formatAccountNumber(account.accountNumber)}
+                          {account.accountNumber}
                         </span>
                       </TableCell>
                       <TableCell className="capitalize">{account.type}</TableCell>
@@ -109,7 +109,7 @@ const AccountCard = memo(function AccountCard({ account }: { account: Account })
             <div>
               <h3 className="font-medium text-brand-primary">{account.name}</h3>
               <p className="text-sm text-brand-muted" aria-label={`Account number ${account.accountNumber}`}>
-                {formatAccountNumber(account.accountNumber)} &middot; <span className="capitalize">{account.type}</span>
+                {account.accountNumber} &middot; <span className="capitalize">{account.type}</span>
               </p>
             </div>
             <div className="text-right">
