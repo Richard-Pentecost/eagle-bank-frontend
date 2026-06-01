@@ -31,3 +31,4 @@ public/mockServiceWorker.js
 
 *storybook.log
 storybook-static
+.vercel
