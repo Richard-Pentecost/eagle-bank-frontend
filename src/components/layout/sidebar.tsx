@@ -8,21 +8,37 @@ const navItems = [
   { label: 'Profile', path: '/profile', icon: ProfileIcon },
 ]
 
-export function Sidebar() {
+export function Sidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
   return (
-    <aside className="hidden w-64 flex-shrink-0 border-r border-brand-border bg-white md:flex md:flex-col">
-      <div className="flex h-16 items-center border-b border-brand-border px-6">
-        <span className="text-xl font-bold text-brand-primary">Eagle Bank</span>
+    <aside
+      className={cn(
+        'hidden flex-shrink-0 border-r border-brand-border bg-white transition-all duration-200 md:flex md:flex-col',
+        collapsed ? 'w-16' : 'w-64',
+      )}
+    >
+      <div className="flex h-16 items-center justify-between border-b border-brand-border px-3">
+        {!collapsed && <span className="px-3 text-xl font-bold text-brand-primary">Eagle Bank</span>}
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          className="rounded-md p-2 text-brand-muted hover:bg-gray-100 hover:text-brand-primary"
+        >
+          <CollapseIcon className="h-5 w-5" collapsed={collapsed} />
+        </button>
       </div>
-      <nav className="flex-1 p-4" aria-label="Main navigation">
+      <nav className={cn('flex-1', collapsed ? 'p-2' : 'p-4')} aria-label="Main navigation">
         <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.path}>
               <NavLink
                 to={item.path}
+                aria-label={collapsed ? item.label : undefined}
+                title={collapsed ? item.label : undefined}
                 className={({ isActive }) =>
                   cn(
-                    'flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors',
+                    'flex items-center rounded-md text-sm font-medium transition-colors',
+                    collapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3 py-2.5',
                     isActive
                       ? 'bg-brand-primary/5 text-brand-primary'
                       : 'text-brand-muted hover:bg-gray-100 hover:text-brand-primary',
@@ -31,8 +47,8 @@ export function Sidebar() {
               >
                 {({ isActive }) => (
                   <>
-                    <item.icon className="h-5 w-5" aria-hidden="true" />
-                    <span>{item.label}</span>
+                    <item.icon className="h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                    {!collapsed && <span>{item.label}</span>}
                     {isActive && <span className="sr-only">(current page)</span>}
                   </>
                 )}
@@ -42,6 +58,18 @@ export function Sidebar() {
         </ul>
       </nav>
     </aside>
+  )
+}
+
+function CollapseIcon({ className, collapsed }: { className?: string; collapsed: boolean }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      {collapsed ? (
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+      ) : (
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+      )}
+    </svg>
   )
 }
 
