@@ -4,9 +4,9 @@ import { Link, useNavigate } from 'react-router'
 import { useAuth } from '@/providers/auth-provider'
 import { registerSchema, type RegisterFormData } from '@/lib/validators'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { FormField } from '@/components/ui/form-field'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import { Alert } from '@/components/feedback/alert'
 import { usePageTitle } from '@/hooks/use-page-title'
 
 export function RegisterPage() {
@@ -47,87 +47,43 @@ export function RegisterPage() {
           </CardHeader>
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <CardContent className="space-y-4">
-              {error && (
-                <div
-                  className="rounded-md bg-red-50 p-3 text-sm text-brand-danger"
-                  role="alert"
-                  aria-live="polite"
-                >
-                  {error}
-                </div>
-              )}
+              {error && <Alert variant="error">{error}</Alert>}
 
-              <div className="space-y-2">
-                <Label htmlFor="name">Full name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="John Doe"
-                  autoComplete="name"
-                  error={!!errors.name}
-                  aria-describedby={errors.name ? 'name-error' : undefined}
-                  {...register('name')}
-                />
-                {errors.name && (
-                  <p id="name-error" className="text-sm text-brand-danger" role="alert">
-                    {errors.name.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                label="Full name"
+                type="text"
+                placeholder="John Doe"
+                autoComplete="name"
+                error={errors.name?.message}
+                {...register('name')}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  error={!!errors.email}
-                  aria-describedby={errors.email ? 'email-error' : undefined}
-                  {...register('email')}
-                />
-                {errors.email && (
-                  <p id="email-error" className="text-sm text-brand-danger" role="alert">
-                    {errors.email.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                label="Email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                error={errors.email?.message}
+                {...register('email')}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  placeholder="Min. 8 characters"
-                  autoComplete="new-password"
-                  error={!!errors.password}
-                  aria-describedby={errors.password ? 'password-error' : undefined}
-                  {...register('password')}
-                />
-                {errors.password && (
-                  <p id="password-error" className="text-sm text-brand-danger" role="alert">
-                    {errors.password.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                label="Password"
+                type="password"
+                placeholder="Min. 8 characters"
+                autoComplete="new-password"
+                error={errors.password?.message}
+                {...register('password')}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Repeat your password"
-                  autoComplete="new-password"
-                  error={!!errors.confirmPassword}
-                  aria-describedby={errors.confirmPassword ? 'confirm-error' : undefined}
-                  {...register('confirmPassword')}
-                />
-                {errors.confirmPassword && (
-                  <p id="confirm-error" className="text-sm text-brand-danger" role="alert">
-                    {errors.confirmPassword.message}
-                  </p>
-                )}
-              </div>
+              <FormField
+                label="Confirm password"
+                type="password"
+                placeholder="Repeat your password"
+                autoComplete="new-password"
+                error={errors.confirmPassword?.message}
+                {...register('confirmPassword')}
+              />
             </CardContent>
 
             <CardFooter className="flex-col gap-4">

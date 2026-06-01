@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorMessage } from '@/components/feedback/error-message'
 import { EmptyState } from '@/components/feedback/empty-state'
+import { PageHeader } from '@/components/ui/page-header'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { formatCurrency } from '@/lib/formatters'
 import type { Account } from '@/types'
@@ -19,12 +20,10 @@ export function Component() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-brand-primary">Accounts</h1>
-        <p className="text-brand-muted">
-          {isLoading ? 'Loading...' : `${accounts.length} account${accounts.length !== 1 ? 's' : ''}`}
-        </p>
-      </div>
+      <PageHeader
+        title="Accounts"
+        description={isLoading ? 'Loading...' : `${accounts.length} account${accounts.length !== 1 ? 's' : ''}`}
+      />
 
       {isLoading ? (
         <AccountsSkeleton />

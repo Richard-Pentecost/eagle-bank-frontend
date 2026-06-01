@@ -8,9 +8,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import { Select } from '@/components/ui/select'
 import { Skeleton } from '@/components/ui/skeleton'
 import { ErrorMessage } from '@/components/feedback/error-message'
 import { EmptyState } from '@/components/feedback/empty-state'
+import { PageHeader } from '@/components/ui/page-header'
 import { formatCurrency, formatDate } from '@/lib/formatters'
 import * as Dialog from '@radix-ui/react-dialog'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
@@ -66,12 +68,10 @@ export function Component() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-brand-primary">Transactions</h1>
-        <p className="text-brand-muted">
-          {isLoading ? 'Loading...' : `${meta.total} transaction${meta.total !== 1 ? 's' : ''}`}
-        </p>
-      </div>
+      <PageHeader
+        title="Transactions"
+        description={isLoading ? 'Loading...' : `${meta.total} transaction${meta.total !== 1 ? 's' : ''}`}
+      />
 
       {/* Filters */}
       <Card>
@@ -79,32 +79,32 @@ export function Component() {
           <div className="flex flex-wrap items-end gap-4">
             <div className="min-w-[140px]">
               <Label htmlFor="account-filter">Account</Label>
-              <select
+              <Select
                 id="account-filter"
                 value={accountId || ''}
                 onChange={(e) => updateParam('accountId', e.target.value || null)}
-                className="mt-1 flex h-11 w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                className="mt-1"
               >
                 <option value="">All accounts</option>
                 {accounts.map((a) => (
                   <option key={a.id} value={a.id}>{a.name}</option>
                 ))}
-              </select>
+              </Select>
             </div>
 
             <div className="min-w-[130px]">
               <Label htmlFor="type-filter">Type</Label>
-              <select
+              <Select
                 id="type-filter"
                 value={type || ''}
                 onChange={(e) => updateParam('type', e.target.value || null)}
-                className="mt-1 flex h-11 w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                className="mt-1"
               >
                 <option value="">All types</option>
                 <option value="deposit">Deposit</option>
                 <option value="withdrawal">Withdrawal</option>
                 <option value="transfer">Transfer</option>
-              </select>
+              </Select>
             </div>
 
             <div>
@@ -131,7 +131,7 @@ export function Component() {
 
             <div className="min-w-[130px]">
               <Label htmlFor="sort-filter">Sort by</Label>
-              <select
+              <Select
                 id="sort-filter"
                 value={`${sortBy}-${sortOrder}`}
                 onChange={(e) => {
@@ -139,13 +139,13 @@ export function Component() {
                   updateParam('sortBy', sb)
                   updateParam('sortOrder', so)
                 }}
-                className="mt-1 flex h-11 w-full rounded-md border border-brand-border bg-white px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                className="mt-1"
               >
                 <option value="date-desc">Date (newest)</option>
                 <option value="date-asc">Date (oldest)</option>
                 <option value="amount-desc">Amount (high)</option>
                 <option value="amount-asc">Amount (low)</option>
-              </select>
+              </Select>
             </div>
 
             <Button variant="ghost" size="sm" onClick={clearFilters}>

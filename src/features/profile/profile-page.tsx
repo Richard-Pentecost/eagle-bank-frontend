@@ -8,8 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { FormField } from '@/components/ui/form-field'
 import { Spinner } from '@/components/ui/spinner'
 import { ErrorMessage } from '@/components/feedback/error-message'
+import { Alert } from '@/components/feedback/alert'
+import { PageHeader } from '@/components/ui/page-header'
 import * as Avatar from '@radix-ui/react-avatar'
 
 export function Component() {
@@ -69,15 +72,16 @@ export function Component() {
     await uploadAvatar(file)
   }
 
+  const profileName = profile?.name
   const initials = useMemo(() => {
-    if (!profile?.name) return 'U'
-    return profile.name
+    if (!profileName) return 'U'
+    return profileName
       .split(' ')
       .map((n) => n[0])
       .join('')
       .toUpperCase()
       .slice(0, 2)
-  }, [profile?.name])
+  }, [profileName])
 
   if (error) return <ErrorMessage message={error} onRetry={retry} />
 
@@ -91,10 +95,7 @@ export function Component() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-brand-primary">Profile</h1>
-        <p className="text-brand-muted">Manage your personal information</p>
-      </div>
+      <PageHeader title="Profile" description="Manage your personal information" />
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Avatar Section */}
@@ -139,34 +140,15 @@ export function Component() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
-              {saveError && (
-                <div className="rounded-md bg-red-50 p-3 text-sm text-brand-danger" role="alert">
-                  {saveError}
-                </div>
-              )}
-              {saveSuccess && (
-                <div
-                  className="rounded-md bg-green-50 p-3 text-sm text-brand-success"
-                  role="status"
-                  aria-live="polite"
-                >
-                  Profile updated successfully
-                </div>
-              )}
+              {saveError && <Alert variant="error">{saveError}</Alert>}
+              {saveSuccess && <Alert variant="success">Profile updated successfully</Alert>}
 
               <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full name</Label>
-                  <Input
-                    id="name"
-                    error={!!errors.name}
-                    aria-describedby={errors.name ? 'name-error' : undefined}
-                    {...register('name')}
-                  />
-                  {errors.name && (
-                    <p id="name-error" className="text-sm text-brand-danger">{errors.name.message}</p>
-                  )}
-                </div>
+                <FormField
+                  label="Full name"
+                  error={errors.name?.message}
+                  {...register('name')}
+                />
 
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
@@ -175,77 +157,46 @@ export function Component() {
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone number</Label>
-                <Input
-                  id="phone"
-                  type="tel"
-                  placeholder="07700 900123"
-                  error={!!errors.phone}
-                  {...register('phone')}
-                />
-                {errors.phone && (
-                  <p className="text-sm text-brand-danger">{errors.phone.message}</p>
-                )}
-              </div>
+              <FormField
+                label="Phone number"
+                type="tel"
+                placeholder="07700 900123"
+                error={errors.phone?.message}
+                {...register('phone')}
+              />
 
               <fieldset>
                 <legend className="text-sm font-medium text-brand-primary mb-3">Address</legend>
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="line1">Address line 1</Label>
-                    <Input
-                      id="line1"
-                      error={!!errors.address?.line1}
-                      aria-describedby={errors.address?.line1 ? 'line1-error' : undefined}
-                      {...register('address.line1')}
-                    />
-                    {errors.address?.line1 && (
-                      <p id="line1-error" className="text-sm text-brand-danger">{errors.address.line1.message}</p>
-                    )}
-                  </div>
+                  <FormField
+                    label="Address line 1"
+                    error={errors.address?.line1?.message}
+                    {...register('address.line1')}
+                  />
 
-                  <div className="space-y-2">
-                    <Label htmlFor="line2">Address line 2 (optional)</Label>
-                    <Input id="line2" {...register('address.line2')} />
-                  </div>
+                  <FormField
+                    label="Address line 2 (optional)"
+                    {...register('address.line2')}
+                  />
 
                   <div className="grid gap-4 sm:grid-cols-3">
-                    <div className="space-y-2">
-                      <Label htmlFor="city">City</Label>
-                      <Input
-                        id="city"
-                        error={!!errors.address?.city}
-                        {...register('address.city')}
-                      />
-                      {errors.address?.city && (
-                        <p className="text-sm text-brand-danger">{errors.address.city.message}</p>
-                      )}
-                    </div>
+                    <FormField
+                      label="City"
+                      error={errors.address?.city?.message}
+                      {...register('address.city')}
+                    />
 
-                    <div className="space-y-2">
-                      <Label htmlFor="postcode">Postcode</Label>
-                      <Input
-                        id="postcode"
-                        error={!!errors.address?.postcode}
-                        {...register('address.postcode')}
-                      />
-                      {errors.address?.postcode && (
-                        <p className="text-sm text-brand-danger">{errors.address.postcode.message}</p>
-                      )}
-                    </div>
+                    <FormField
+                      label="Postcode"
+                      error={errors.address?.postcode?.message}
+                      {...register('address.postcode')}
+                    />
 
-                    <div className="space-y-2">
-                      <Label htmlFor="country">Country</Label>
-                      <Input
-                        id="country"
-                        error={!!errors.address?.country}
-                        {...register('address.country')}
-                      />
-                      {errors.address?.country && (
-                        <p className="text-sm text-brand-danger">{errors.address.country.message}</p>
-                      )}
-                    </div>
+                    <FormField
+                      label="Country"
+                      error={errors.address?.country?.message}
+                      {...register('address.country')}
+                    />
                   </div>
                 </div>
               </fieldset>
