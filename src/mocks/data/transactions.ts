@@ -49,7 +49,11 @@ function generateTransactions(): Transaction[] {
 
   for (let i = 0; i < 50; i++) {
     const type = types[i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 2]
-    const daysAgo = Math.floor(Math.random() * 90)
+    // Ensure ~60% of transactions fall within the current month
+    const currentDay = now.getDate()
+    const daysAgo = i < 30
+      ? Math.floor(Math.random() * Math.max(currentDay, 1))
+      : Math.floor(Math.random() * 90)
     const date = subDays(now, daysAgo)
     const amount =
       type === 'deposit'
@@ -84,7 +88,10 @@ export function createDefaultTransactions(accountIds: string[]): Transaction[] {
 
   for (let i = 0; i < 15; i++) {
     const type = types[i % 3]
-    const daysAgo = Math.floor(Math.random() * 30)
+    const currentDay = now.getDate()
+    const daysAgo = i < 10
+      ? Math.floor(Math.random() * Math.max(currentDay, 1))
+      : Math.floor(Math.random() * 30)
     const date = subDays(now, daysAgo)
     const amount =
       type === 'deposit'
