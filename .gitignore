@@ -26,8 +26,6 @@ dist-ssr
 # Testing
 coverage
 
-# MSW
-public/mockServiceWorker.js
 
 *storybook.log
 storybook-static
