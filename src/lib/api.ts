@@ -32,10 +32,19 @@ export async function apiClient<T>(
     ;(headers as Record<string, string>)['Authorization'] = `Bearer ${token}`
   }
 
-  const response = await fetch(endpoint, {
+  let response = await fetch(endpoint, {
     ...fetchOptions,
     headers,
   })
+
+  if (response.status === 404 && endpoint.startsWith('/api/')) {
+    const { worker } = await import('@/mocks/browser')
+    await worker.start({ onUnhandledRequest: 'bypass' })
+    response = await fetch(endpoint, {
+      ...fetchOptions,
+      headers,
+    })
+  }
 
   if (!response.ok) {
     const data = await response.json().catch(() => ({ message: 'An error occurred' }))
