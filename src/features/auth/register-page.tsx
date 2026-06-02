@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router'
-import { useAuth } from '@/providers/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 import { registerSchema, type RegisterFormData } from '@/lib/validators'
 import { Button } from '@/components/ui/button'
 import { FormField } from '@/components/ui/form-field'

@@ -1,7 +1,7 @@
 import { useMemo, memo } from 'react'
 import { usePageTitle } from '@/hooks/use-page-title'
 import { useReducedMotion } from '@/hooks/use-reduced-motion'
-import { useAuth } from '@/providers/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 import { useDashboard } from '@/hooks/use-dashboard'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'

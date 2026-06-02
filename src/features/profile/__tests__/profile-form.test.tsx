@@ -5,13 +5,12 @@ import { MemoryRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Mock useAuth to avoid AuthProvider auth flow in tests
-vi.mock('@/providers/auth-provider', () => ({
+vi.mock('@/hooks/use-auth', () => ({
   useAuth: () => ({
     user: { id: '1', name: 'James Wilson', email: 'demo@eaglebank.com' },
     isAuthenticated: true,
     isLoading: false,
   }),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 import { Component as ProfilePage } from '../profile-page'

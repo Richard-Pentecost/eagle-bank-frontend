@@ -4,13 +4,12 @@ import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-vi.mock('@/providers/auth-provider', () => ({
+vi.mock('@/hooks/use-auth', () => ({
   useAuth: () => ({
     user: { id: '1', name: 'James Wilson', email: 'demo@eaglebank.com' },
     isAuthenticated: true,
     isLoading: false,
   }),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 import { Component as TransactionsPage } from '../transactions-page'

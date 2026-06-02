@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router'
-import { useAuth } from '@/providers/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 import { AppShell } from '@/components/layout/app-shell'
 import { Spinner } from '@/components/ui/spinner'
 
