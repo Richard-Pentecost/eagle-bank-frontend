@@ -1,20 +1,8 @@
-import { createContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { useState, useEffect, useCallback, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { authResponseSchema, userSchema } from '@/types'
 import type { User } from '@/types'
-
-interface AuthContextType {
-  user: User | null
-  isLoading: boolean
-  isAuthenticated: boolean
-  error: string | null
-  login: (email: string, password: string) => Promise<void>
-  register: (name: string, email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
-  clearError: () => void
-}
-
-export const AuthContext = createContext<AuthContextType | null>(null)
+import { AuthContext } from '@/providers/auth-context'
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
