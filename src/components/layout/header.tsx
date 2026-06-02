@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuth } from '@/providers/auth-provider'
+import { useAuth } from '@/hooks/use-auth'
 import { MobileNav } from './mobile-nav'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 import { useNavigate } from 'react-router'

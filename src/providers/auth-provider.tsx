@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { createContext, useState, useEffect, useCallback, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { authResponseSchema, userSchema } from '@/types'
 import type { User } from '@/types'
@@ -14,20 +14,17 @@ interface AuthContextType {
   clearError: () => void
 }
 
-const AuthContext = createContext<AuthContextType | null>(null)
+export const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
   const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const token = localStorage.getItem('eagle-bank-token')
+  const [isLoading, setIsLoading] = useState(!!token)
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const token = localStorage.getItem('eagle-bank-token')
-    if (!token) {
-      setIsLoading(false)
-      return
-    }
+    if (!token) return
 
     fetch('/api/auth/me', {
       headers: { Authorization: `Bearer ${token}` },
@@ -124,10 +121,3 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
-export function useAuth() {
-  const context = useContext(AuthContext)
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
-}
